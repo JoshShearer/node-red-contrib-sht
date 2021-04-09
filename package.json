@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-sht",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node-RED node for reading measurements from Sensirion SHT3x humidity and temperature sensors",
   "keywords": [
     "node-red",
@@ -17,6 +17,10 @@
     "sht31-node": "^1.0.0"
   },   
   "author": "Jens Lehmann",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jelehmann/node-red-contrib-sht"
+  },  
   "license": "MIT",
   "node-red" : {
       "nodes": {

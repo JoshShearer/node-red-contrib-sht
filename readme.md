@@ -12,14 +12,14 @@ This node for Node-RED provides easy access to read temperature and humidity val
 
 ## Installation
 
-### Pre-Reqeuisites
+### Prereqeuisites
 
 ```bash
 # Run this in your favourite terminal
 npm install sht31-node
 ```
 
-Highly recommended: Run the Node-Red specific [bash script for the Raspberry Pi](https://nodered.org/docs/getting-started/raspberrypi) fillowed by
+Highly recommended: Run the Node-Red specific [bash script for the Raspberry Pi](https://nodered.org/docs/getting-started/raspberrypi) followed by
 
 ```bash
 npm rebuild
@@ -50,7 +50,7 @@ The `msg.payload` of the outgoing object will be a object with the key names `te
 The queried I2C address of 0x44 is changable.
 
 
-![Demo Image](node-demo.png)
+![Demo Image](https://github.com/jelehmann/node-red-contrib-sht/blob/main/node-demo.png)
 
 ## Contributing
 
