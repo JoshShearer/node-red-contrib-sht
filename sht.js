@@ -1,36 +1,36 @@
-const {SHT31} = require('sht31-node')
+const { SHT31 } = require('sht31-node');
 
-module.exports = function(RED) {
+module.exports = function (RED) {
     function SHTNode(config) {
-        RED.nodes.createNode(this,config);
-        var node = this;  
-        node.status({});
-        node.on('input', function(msg, send, done) {
-			const s = new SHT31()
-			if (config.shtaddress) s.address = parseInt(config.shtaddress, 16);
-			node.status({fill:"yellow",shape:"dot",text:"querying..."});
-			const data = s.readSensorData().then(daten => {
-				// const temperature = daten.temperature.toFixed(2);
-				// const humidity    = daten.humidity.toFixed(2);
-				// node.warn("Temperatur: "+temperature+" °C");
-				// node.warn("Luftfeuchtigkeit: "+humidity+" %");
-				return daten;
-			}).catch(function(err) {
-          		node.status({fill: 'red', shape: 'dot', text: 'no sensor at 0x'+s.address.toString(16)});
-          		done(err);
-          		node.error;
-        	});
+        RED.nodes.createNode(this, config);
+        const node = this;
 
-			data.then(shtdaten => {
-				if (isNaN(shtdaten.temperature)) {
-					node.status({fill:"red",shape:"dot",text:"invalid data!"});
-				} else {
-					node.status({fill:"green",shape:"dot",text:shtdaten.temperature.toFixed(1)+"°C "+shtdaten.humidity.toFixed(1)+"%"});
-				}
-			    msg.payload = shtdaten;
-			    node.send(msg);   
-			});
-        });     
+        node.status({});
+        const sht = new SHT31(config.shtaddress ? parseInt(config.shtaddress, 16) : null, config.shtbus ? parseInt(config.shtbus, 10) : null);
+
+        node.on('input', async function (msg) {
+            node.status({ fill: "yellow", shape: "dot", text: "querying..." });
+
+            try {
+                const shtdata = await sht.readSensorData();
+
+                if (!isNaN(shtdata.temperature) && !isNaN(shtdata.humidity)) {
+                    const temp = shtdata.temperature.toFixed(1);
+                    const hum = shtdata.humidity.toFixed(1);
+                    node.status({ fill: "green", shape: "dot", text: `${temp}°C ${hum}%` });
+                    msg.payload = shtdata;
+                } else {
+                    node.status({ fill: "red", shape: "dot", text: "invalid data!" });
+                    msg.payload = { temperature: "N/A", humidity: "N/A" };
+                }
+
+                node.send(msg);
+            } catch (err) {
+                node.status({ fill: 'red', shape: 'dot', text: 'Error reading sensor' });
+                node.error(err, msg);
+            }
+        });
     }
-    RED.nodes.registerType("SHT3x",SHTNode);
-}
+
+    RED.nodes.registerType("SHT3x", SHTNode);
+};

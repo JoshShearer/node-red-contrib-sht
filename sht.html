@@ -4,7 +4,8 @@
         color: '#3FADB5',
         defaults: {
             name: {value:""},
-            shtaddress: {value:"0x44"}
+            shtaddress: {value:"0x44"},
+            shtbus: {value:"1"}
         },
         inputs:1,
         outputs:1,
@@ -23,6 +24,10 @@
     <div class="form-row">
         <label for="node-input-shtaddress"><i class="fa fa-plug"></i> I2C address</label>
         <input type="text" id="node-input-shtaddress" placeholder="0x44">
+    </div>  
+    <div class="form-row">
+        <label for="node-input-shtbus"><i class="fa fa-plug"></i> I2C bus</label>
+        <input type="text" id="node-input-shtbus" placeholder="1">
     </div>  
     <div class="form-tips"><b>Info:</b> Default I2C address is <i>0x44</i> or in case ADDR pin of the SHT3x chip is connected to logic high <i>0x45</i>.</div>       
 </script>
